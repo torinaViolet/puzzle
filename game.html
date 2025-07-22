@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>六层密码牢笼挑战</title>
+    <style>
+        :root {
+            --level-6: #4a6572;
+            --level-5: #5d1049;
+            --level-4: #0c4b8e;
+            --level-3: #2e7d32;
+            --level-2: #f9a825;
+            --level-1: #d32f2f;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: #0f1923;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            background: rgba(25, 35, 45, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a4861;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4fc3f7;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+            margin: 0 0 20px;
+            font-size: 1.8rem;
+            padding: 10px 0;
+        }
+
+        .level-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .level-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #37474f;
+            border: 2px solid #546e7a;
+            transition: all 0.3s;
+        }
+
+        .level-dot.active {
+            transform: scale(1.4);
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .cipher-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            word-break: break-all;
+            border: 1px solid #37474f;
+            font-size: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .hint-box {
+            background: rgba(25, 118, 210, 0.15);
+            padding: 12px 15px;
+            border-left: 4px solid #2196f3;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 1rem;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        #answer-input {
+            padding: 14px 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid #37474f;
+            color: #e0e0e0;
+            font-family: inherit;
+            border-radius: 8px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        button {
+            background: linear-gradient(135deg, #1565c0, #2196f3);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        button:hover,
+        button:active {
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+
+        #feedback {
+            min-height: 30px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 10px;
+        }
+
+        .success {
+            color: #66bb6a;
+            background: rgba(76, 175, 80, 0.15);
+            border-radius: 8px;
+        }
+
+        .error {
+            color: #ef5350;
+            background: rgba(244, 67, 54, 0.15);
+            border-radius: 8px;
+        }
+
+        .victory-screen {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 30, 60, 0.95);
+            border-radius: 12px;
+            display: none;
+        }
+
+        .decryption-animation {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .layer {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 5px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            transition: transform 0.5s;
+            margin: 5px;
+        }
+
+        .level-label {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 15px 0 5px;
+            color: #4fc3f7;
+            font-weight: bold;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+                margin-bottom: 15px;
+            }
+
+            .cipher-box {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .hint-box {
+                padding: 10px 12px;
+                font-size: 0.95rem;
+            }
+
+            #answer-input {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            button {
+                padding: 14px;
+                font-size: 1rem;
+            }
+
+            .layer {
+                width: 85px;
+                height: 85px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 350px) {
+            .layer {
+                width: 75px;
+                height: 75px;
+                font-size: 0.7rem;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+            }
+        }
+
+        /* 添加触摸反馈 */
+        button:active {
+            transform: translateY(1px) !important;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.4) !important;
+        }
+
+        /* 键盘弹出时不挤压内容 */
+        @media (max-height: 500px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                margin-bottom: 10px;
+                font-size: 1.4rem;
+            }
+
+            .level-indicator {
+                margin-bottom: 10px;
+            }
+
+            .input-section {
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🔐 六层密码牢笼挑战</h1>
+
+        <div class="level-indicator" id="levelIndicator">
+            <!-- JS动态生成 -->
+        </div>
+
+        <div class="level-label">第 <span id="currentLevel">6</span> 层</div>
+
+        <div id="gameScreen">
+            <div class="cipher-box" id="cipherDisplay"></div>
+
+            <div class="hint-box">
+                <strong>🔑 当前提示：</strong>
+                <span id="hintDisplay"></span>
+            </div>
+
+            <div class="input-section">
+                <input type="text" id="answer-input" placeholder="输入本层解密结果..." autocapitalize="off" autocorrect="off">
+                <button id="submit-btn">解锁下一层</button>
+            </div>
+
+            <div id="feedback"></div>
+        </div>
+
+        <div id="victoryScreen" class="victory-screen">
+            <h2>🎉 密码牢笼已被攻破！</h2>
+            <div class="decryption-animation" id="decryptionAnimation">
+                <!-- 解密动画 -->
+            </div>
+            <div id="finalMessage"></div>
+            <button id="restart-btn">再次挑战</button>
+        </div>
+    </div>
+
+    <script>
+        // 游戏数据
+        const levels = [
+            {
+                level: 6,
+                cipher: "OTcgOTcgODcgOTcgODcgOTcgOTcgODcgODggODcgNTYgNTYgNTYgNTYgNTYgNTYgODcgODcgNTYgODcgOTcgOTcgOTcgODcgODcgNTYgOTc=",
+                hint: "方阵藏玄机，解码见数字",
+                answer: "97 97 87 97 87 97 97 87 88 87 56 56 56 56 56 56 87 87 56 87 97 97 97 87 87 56 97"
+            },
+            {
+                level: 5,
+                cipher: "97 97 87 97 87 97 97 87 88 87 56 56 56 56 56 56 87 87 56 87 97 97 97 87 87 56 97",
+                hint: "镜中观数字，左右皆相反",
+                answer: "79 65 78 78 79 79 79 78 65 78 78 65 65 65 65 65 65 78 88 78 79 79 78 79 78 79 79"
+            },
+            {
+                level: 4,
+                cipher: "79 65 78 78 79 79 79 78 65 78 78 65 65 65 65 65 65 78 88 78 79 79 78 79 78 79 79",
+                hint: "恺撒移位三，数字轮回转",
+                answer: "46 32 45 45 46 46 46 45 32 45 45 32 32 32 32 32 32 45 55 45 46 46 45 46 45 46 46"
+            },
+            {
+                level: 3,
+                cipher: "46 32 45 45 46 46 46 45 32 45 45 32 32 32 32 32 32 45 55 45 46 46 45 46 45 46 46",
+                hint: "跨栏三步走，奇偶分三行",
+                answer: "46 45 55 32 45 45 45 32 46 45 32 46 46 32 45 46 32 46 46 32 45 45 32 46 32 45 46"
+            },
+            {
+                level: 2,
+                cipher: "46 45 55 32 45 45 45 32 46 45 32 46 46 32 45 46 32 46 46 32 45 45 32 46 32 45 46",
+                hint: "数字背后藏字符，机器语言待人读",
+                answer: ".-- --- .- .. -. .. -- . -."
+            },
+            {
+                level: 1,
+                cipher: ".-- --- .- .. -. .. -- . -.",
+                hint: "滴答声中传心语，长短相间辨真意",
+                answer: "我爱你们"
+            }
+        ];
+
+        // DOM元素
+        const levelIndicator = document.getElementById('levelIndicator');
+        const currentLevelDisplay = document.getElementById('currentLevel');
+        const cipherDisplay = document.getElementById('cipherDisplay');
+        const hintDisplay = document.getElementById('hintDisplay');
+        const answerInput = document.getElementById('answer-input');
+        const submitBtn = document.getElementById('submit-btn');
+        const feedback = document.getElementById('feedback');
+        const gameScreen = document.getElementById('gameScreen');
+        const victoryScreen = document.getElementById('victoryScreen');
+        const finalMessage = document.getElementById('finalMessage');
+        const restartBtn = document.getElementById('restart-btn');
+        const decryptionAnimation = document.getElementById('decryptionAnimation');
+
+        let currentLevel = 0;
+
+        // 初始化游戏
+        function initGame() {
+            currentLevel = 0;
+            renderLevelIndicators();
+            loadLevel(currentLevel);
+            victoryScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+        }
+
+        // 渲染层级指示器
+        function renderLevelIndicators() {
+            levelIndicator.innerHTML = '';
+            levels.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = `level-dot ${index === currentLevel ? 'active' : ''}`;
+                dot.style.backgroundColor = `var(--level-${6 - index})`;
+                levelIndicator.appendChild(dot);
+            });
+        }
+
+        // 加载当前关卡
+        function loadLevel(levelIndex) {
+            const level = levels[levelIndex];
+            cipherDisplay.textContent = level.cipher;
+            hintDisplay.textContent = level.hint;
+            answerInput.value = '';
+            answerInput.focus();
+            currentLevelDisplay.textContent = 6 - levelIndex;
+
+            // 更新激活状态
+            document.querySelectorAll('.level-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === levelIndex);
+                dot.style.backgroundColor = `var(--level-${6 - index})`;
+            });
+        }
+
+        // 提交答案
+        function submitAnswer() {
+            const userAnswer = answerInput.value.trim();
+            const correctAnswer = levels[currentLevel].answer;
+
+            if (userAnswer === correctAnswer) {
+                feedback.textContent = '✅ 答案正确！解锁下一层...';
+                feedback.className = 'success';
+
+                setTimeout(() => {
+                    currentLevel++;
+
+                    if (currentLevel < levels.length) {
+                        loadLevel(currentLevel);
+                        feedback.textContent = '';
+                    } else {
+                        showVictory();
+                    }
+                }, 800);
+            } else {
+                feedback.textContent = '❌ 答案错误，请重新尝试';
+                feedback.className = 'error';
+
+                // 添加震动效果
+                answerInput.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    answerInput.style.animation = '';
+                }, 500);
+
+                answerInput.focus();
+            }
+        }
+
+        // 显示胜利画面
+        function showVictory() {
+            gameScreen.style.display = 'none';
+            victoryScreen.style.display = 'block';
+
+            // 创建解密动画
+            decryptionAnimation.innerHTML = '';
+            const layers = [
+                { text: "镜像反转", level: 6 },
+                { text: "凯撒移位", level: 5 },
+                { text: "栅栏密码", level: 4 },
+                { text: "ASCII映射", level: 3 },
+                { text: "摩斯密码", level: 2 },
+                { text: "最终答案", level: 1 }
+            ];
+
+            layers.forEach((item, i) => {
+                const layer = document.createElement('div');
+                layer.className = 'layer';
+                layer.textContent = item.text;
+                layer.style.backgroundColor = `var(--level-${item.level})`;
+                layer.style.transform = `scale(${0.7 + i * 0.05})`;
+                layer.style.zIndex = 10 - i;
+                layer.style.animation = `popIn 0.6s ${i * 0.2}s forwards`;
+                layer.style.opacity = '0';
+                decryptionAnimation.appendChild(layer);
+            });
+
+            finalMessage.innerHTML = `
+                <h3>🔓 最终明文：<span style="color:#4caf50;font-size:1.4em">"我爱你们"</span></h3>
+                <p>恭喜你成功破解六层密码牢笼！</p>
+                <p>你的密码学造诣令人惊叹 👏</p>
+                <p>试着去找托莉娜领取奖励吧！说不定你是第一个呢❥(^_-)</p>
+            `;
+        }
+
+        // 事件监听
+        submitBtn.addEventListener('click', submitAnswer);
+        answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') submitAnswer();
+        });
+        restartBtn.addEventListener('click', initGame);
+
+        // 添加CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+            @keyframes popIn {
+                0% { transform: scale(0.5); opacity: 0; }
+                70% { transform: scale(1.1); opacity: 1; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 启动游戏
+        initGame();
+    </script>
+</body>
+
+</html>
