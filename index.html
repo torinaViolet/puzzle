@@ -35,7 +35,7 @@
             padding: 20px;
             box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
             border: 1px solid #2a4861;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -151,6 +151,297 @@
             border-radius: 8px;
         }
 
+        /* 解密动画界面 */
+        .animation-screen {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 30, 60, 0.95);
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .animation-title {
+            color: #4fc3f7;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .animation-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .animation-controls {
+            margin: 20px 0;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .animation-controls button {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            min-width: 120px;
+        }
+
+        /* Base64解码动画 */
+        .base64-animation {
+            font-family: 'Courier New', monospace;
+        }
+
+        .base64-step {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+        }
+
+        .base64-step.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 镜像反转动画 */
+        .mirror-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .mirror-pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 5px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            min-width: 80px;
+        }
+
+        .mirror-original, .mirror-flipped {
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 4px;
+            transition: all 0.8s;
+        }
+
+        .mirror-original {
+            background: #d32f2f;
+            color: white;
+        }
+
+        .mirror-flipped {
+            background: #4caf50;
+            color: white;
+            transform: scaleX(-1);
+            opacity: 0;
+        }
+
+        .mirror-flipped.show {
+            opacity: 1;
+            transform: scaleX(1);
+        }
+
+        .mirror-arrow {
+            font-size: 1.5rem;
+            color: #4fc3f7;
+            margin: 5px 0;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .mirror-arrow.show {
+            opacity: 1;
+        }
+
+        /* 凯撒密码动画 */
+        .caesar-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            max-width: 600px;
+        }
+
+        .caesar-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.6s;
+        }
+
+        .caesar-item.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .caesar-from, .caesar-to {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            padding: 8px;
+            margin: 3px;
+            border-radius: 4px;
+        }
+
+        .caesar-from {
+            background: #ff9800;
+            color: white;
+        }
+
+        .caesar-to {
+            background: #4caf50;
+            color: white;
+        }
+
+        /* 栅栏密码动画 */
+        .rail-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .rail-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            min-height: 40px;
+            align-items: center;
+        }
+
+        .rail-char {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            transition: all 0.8s;
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .rail-char.row-0 { background: #f44336; }
+        .rail-char.row-1 { background: #2196f3; }
+        .rail-char.row-2 { background: #4caf50; }
+
+        .rail-char.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ASCII动画 */
+        .ascii-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            max-width: 800px;
+        }
+
+        .ascii-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            opacity: 0;
+            transform: rotateY(90deg);
+            transition: all 0.6s;
+        }
+
+        .ascii-item.active {
+            opacity: 1;
+            transform: rotateY(0deg);
+        }
+
+        .ascii-code, .ascii-char {
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            padding: 5px;
+            margin: 2px;
+            border-radius: 4px;
+        }
+
+        .ascii-code {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .ascii-char {
+            background: #ff5722;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        /* 摩斯密码动画 */
+        .morse-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            max-width: 600px;
+        }
+
+        .morse-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            min-width: 80px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.8s;
+        }
+
+        .morse-item.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .morse-code {
+            font-family: 'Courier New', monospace;
+            font-size: 1.3rem;
+            color: #ffeb3b;
+            margin-bottom: 8px;
+            letter-spacing: 2px;
+        }
+
+        .morse-letter {
+            font-size: 1.5rem;
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        .morse-blink {
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
         .victory-screen {
             text-align: center;
             padding: 20px;
@@ -227,6 +518,17 @@
                 height: 85px;
                 font-size: 0.8rem;
             }
+
+            .animation-container {
+                padding: 10px;
+                min-height: 150px;
+            }
+
+            .caesar-container,
+            .ascii-container {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 5px;
+            }
         }
 
         @media (max-width: 350px) {
@@ -266,6 +568,18 @@
                 margin: 10px 0;
             }
         }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            70% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
     </style>
 </head>
 
@@ -295,6 +609,18 @@
             <div id="feedback"></div>
         </div>
 
+        <!-- 解密动画界面 -->
+        <div id="animationScreen" class="animation-screen">
+            <h2 class="animation-title" id="animationTitle">解密过程演示</h2>
+            <div class="animation-container" id="animationContainer">
+                <!-- 动画内容 -->
+            </div>
+            <div class="animation-controls">
+                <button id="replay-btn">重播动画</button>
+                <button id="continue-btn">继续下一层</button>
+            </div>
+        </div>
+
         <div id="victoryScreen" class="victory-screen">
             <h2>🎉 密码牢笼已被攻破！</h2>
             <div class="decryption-animation" id="decryptionAnimation">
@@ -312,37 +638,43 @@
                 level: 6,
                 cipher: "OTcgOTcgODcgOTcgODcgOTcgOTcgODcgODggODcgNTYgNTYgNTYgNTYgNTYgNTYgODcgODcgNTYgODcgOTcgOTcgOTcgODcgODcgNTYgOTc=",
                 hint: "方阵藏玄机，解码见数字",
-                answer: "97 97 87 97 87 97 97 87 88 87 56 56 56 56 56 56 87 87 56 87 97 97 97 87 87 56 97"
+                answer: "97 97 87 97 87 97 97 87 88 87 56 56 56 56 56 56 87 87 56 87 97 97 97 87 87 56 97",
+                animationType: "base64"
             },
             {
                 level: 5,
                 cipher: "97 97 87 97 87 97 97 87 88 87 56 56 56 56 56 56 87 87 56 87 97 97 97 87 87 56 97",
                 hint: "镜中观数字，左右皆相反",
-                answer: "79 65 78 78 79 79 79 78 65 78 78 65 65 65 65 65 65 78 88 78 79 79 78 79 78 79 79"
+                answer: "79 65 78 78 79 79 79 78 65 78 78 65 65 65 65 65 65 78 88 78 79 79 78 79 78 79 79",
+                animationType: "mirror"
             },
             {
                 level: 4,
                 cipher: "79 65 78 78 79 79 79 78 65 78 78 65 65 65 65 65 65 78 88 78 79 79 78 79 78 79 79",
                 hint: "恺撒移位三，数字轮回转",
-                answer: "46 32 45 45 46 46 46 45 32 45 45 32 32 32 32 32 32 45 55 45 46 46 45 46 45 46 46"
+                answer: "46 32 45 45 46 46 46 45 32 45 45 32 32 32 32 32 32 45 55 45 46 46 45 46 45 46 46",
+                animationType: "caesar"
             },
             {
                 level: 3,
                 cipher: "46 32 45 45 46 46 46 45 32 45 45 32 32 32 32 32 32 45 55 45 46 46 45 46 45 46 46",
                 hint: "跨栏三步走，奇偶分三行",
-                answer: "46 45 55 32 45 45 45 32 46 45 32 46 46 32 45 46 32 46 46 32 45 45 32 46 32 45 46"
+                answer: "46 45 55 32 45 45 45 32 46 45 32 46 46 32 45 46 32 46 46 32 45 45 32 46 32 45 46",
+                animationType: "rail"
             },
             {
                 level: 2,
                 cipher: "46 45 55 32 45 45 45 32 46 45 32 46 46 32 45 46 32 46 46 32 45 45 32 46 32 45 46",
                 hint: "数字背后藏字符，机器语言待人读",
-                answer: ".-- --- .- .. -. .. -- . -."
+                answer: ".-- --- .- .. -. .. -- . -.",
+                animationType: "ascii"
             },
             {
                 level: 1,
                 cipher: ".-- --- .- .. -. .. -- . -.",
                 hint: "滴答声中传心语，长短相间辨真意",
-                answer: "我爱你们"
+                answer: "我爱你们",
+                animationType: "morse"
             }
         ];
 
@@ -355,12 +687,18 @@
         const submitBtn = document.getElementById('submit-btn');
         const feedback = document.getElementById('feedback');
         const gameScreen = document.getElementById('gameScreen');
+        const animationScreen = document.getElementById('animationScreen');
+        const animationTitle = document.getElementById('animationTitle');
+        const animationContainer = document.getElementById('animationContainer');
+        const replayBtn = document.getElementById('replay-btn');
+        const continueBtn = document.getElementById('continue-btn');
         const victoryScreen = document.getElementById('victoryScreen');
         const finalMessage = document.getElementById('finalMessage');
         const restartBtn = document.getElementById('restart-btn');
         const decryptionAnimation = document.getElementById('decryptionAnimation');
 
         let currentLevel = 0;
+        let animationTimeouts = [];
 
         // 初始化游戏
         function initGame() {
@@ -368,6 +706,7 @@
             renderLevelIndicators();
             loadLevel(currentLevel);
             victoryScreen.style.display = 'none';
+            animationScreen.style.display = 'none';
             gameScreen.style.display = 'block';
         }
 
@@ -398,24 +737,23 @@
             });
         }
 
+        // 清除所有定时器
+        function clearAnimationTimeouts() {
+            animationTimeouts.forEach(timeout => clearTimeout(timeout));
+            animationTimeouts = [];
+        }
+
         // 提交答案
         function submitAnswer() {
             const userAnswer = answerInput.value.trim();
             const correctAnswer = levels[currentLevel].answer;
 
             if (userAnswer === correctAnswer) {
-                feedback.textContent = '✅ 答案正确！解锁下一层...';
+                feedback.textContent = '✅ 答案正确！观看解密过程...';
                 feedback.className = 'success';
-
+                
                 setTimeout(() => {
-                    currentLevel++;
-
-                    if (currentLevel < levels.length) {
-                        loadLevel(currentLevel);
-                        feedback.textContent = '';
-                    } else {
-                        showVictory();
-                    }
+                    showDecryptionAnimation();
                 }, 800);
             } else {
                 feedback.textContent = '❌ 答案错误，请重新尝试';
@@ -431,6 +769,285 @@
             }
         }
 
+        // 显示解密动画
+        function showDecryptionAnimation() {
+            const level = levels[currentLevel];
+            gameScreen.style.display = 'none';
+            animationScreen.style.display = 'block';
+            
+            const levelNames = ['摩斯密码', 'ASCII转换', '栅栏密码', '凯撒密码', '镜像反转', 'Base64解码'];
+            animationTitle.textContent = `第${6 - currentLevel}层 - ${levelNames[currentLevel]}解密过程`;
+
+            playAnimation(level.animationType);
+        }
+
+        // 播放动画
+        function playAnimation(animationType) {
+            clearAnimationTimeouts();
+            animationContainer.innerHTML = '';
+
+            switch (animationType) {
+                case 'base64':
+                    playBase64Animation();
+                    break;
+                case 'mirror':
+                    playMirrorAnimation();
+                    break;
+                case 'caesar':
+                    playCaesarAnimation();
+                    break;
+                case 'rail':
+                    playRailAnimation();
+                    break;
+                case 'ascii':
+                    playAsciiAnimation();
+                    break;
+                case 'morse':
+                    playMorseAnimation();
+                    break;
+            }
+        }
+
+        // Base64解码动画
+        function playBase64Animation() {
+            const cipher = levels[currentLevel].cipher;
+            const result = levels[currentLevel].answer;
+            
+            animationContainer.className = 'animation-container base64-animation';
+            
+            const steps = [
+                { text: `原文：${cipher}`, desc: 'Base64编码的密文' },
+                { text: '识别Base64特征：末尾有等号(=)，使用A-Z a-z 0-9 + / 字符集', desc: '判断编码类型' },
+                { text: '进行Base64解码...', desc: '解码过程' },
+                { text: `结果：${result}`, desc: '解码后的数字序列' }
+            ];
+
+            steps.forEach((step, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'base64-step';
+                stepDiv.innerHTML = `
+                    <div style="font-size: 1.1rem; margin-bottom: 8px;">${step.text}</div>
+                    <div style="color: #4fc3f7; font-size: 0.9rem;">${step.desc}</div>
+                `;
+                animationContainer.appendChild(stepDiv);
+
+                animationTimeouts.push(setTimeout(() => {
+                    stepDiv.classList.add('active');
+                }, index * 1500));
+            });
+        }
+
+        // 镜像反转动画
+        function playMirrorAnimation() {
+            const cipher = levels[currentLevel].cipher.split(' ');
+            const result = levels[currentLevel].answer.split(' ');
+            
+            animationContainer.className = 'animation-container';
+            animationContainer.innerHTML = '<div class="mirror-container"></div>';
+            const container = animationContainer.querySelector('.mirror-container');
+
+            cipher.forEach((num, index) => {
+                const pair = document.createElement('div');
+                pair.className = 'mirror-pair';
+                pair.innerHTML = `
+                    <div class="mirror-original">${num}</div>
+                    <div class="mirror-arrow">↓</div>
+                    <div class="mirror-flipped">${result[index]}</div>
+                `;
+                container.appendChild(pair);
+
+                animationTimeouts.push(setTimeout(() => {
+                    pair.querySelector('.mirror-arrow').classList.add('show');
+                    pair.querySelector('.mirror-flipped').classList.add('show');
+                }, index * 200));
+            });
+        }
+
+        // 凯撒密码动画
+        function playCaesarAnimation() {
+            const cipher = levels[currentLevel].cipher.split(' ');
+            const result = levels[currentLevel].answer.split(' ');
+            
+            animationContainer.className = 'animation-container';
+            animationContainer.innerHTML = '<div class="caesar-container"></div>';
+            const container = animationContainer.querySelector('.caesar-container');
+
+            cipher.forEach((num, index) => {
+                const item = document.createElement('div');
+                item.className = 'caesar-item';
+                item.innerHTML = `
+                    <div class="caesar-from">${num}</div>
+                    <div style="color: #4fc3f7; margin: 5px;">-33</div>
+                    <div class="caesar-to">${result[index]}</div>
+                `;
+                container.appendChild(item);
+
+                animationTimeouts.push(setTimeout(() => {
+                    item.classList.add('active');
+                }, index * 150));
+            });
+        }
+
+        // 栅栏密码动画
+        function playRailAnimation() {
+            const cipher = levels[currentLevel].cipher.split(' ');
+            const result = levels[currentLevel].answer.split(' ');
+            
+            animationContainer.className = 'animation-container';
+            animationContainer.innerHTML = `
+                <div class="rail-container">
+                    <div style="margin-bottom: 20px; color: #4fc3f7;">原始排列 → 栅栏重排（3行）</div>
+                    <div class="rail-row" data-row="0"></div>
+                    <div class="rail-row" data-row="1"></div>
+                    <div class="rail-row" data-row="2"></div>
+                </div>
+            `;
+
+            // 模拟栅栏密码的重排过程
+            const rows = [[], [], []];
+            cipher.forEach((char, index) => {
+                rows[index % 3].push(char);
+            });
+
+            // 显示原始分组
+            rows.forEach((row, rowIndex) => {
+                const rowDiv = animationContainer.querySelector(`[data-row="${rowIndex}"]`);
+                row.forEach((char, charIndex) => {
+                    const charDiv = document.createElement('div');
+                    charDiv.className = `rail-char row-${rowIndex}`;
+                    charDiv.textContent = char;
+                    rowDiv.appendChild(charDiv);
+
+                    animationTimeouts.push(setTimeout(() => {
+                        charDiv.classList.add('show');
+                    }, (rowIndex * row.length + charIndex) * 200));
+                });
+            });
+
+            // 显示重排结果
+            animationTimeouts.push(setTimeout(() => {
+                const resultDiv = document.createElement('div');
+                resultDiv.style.marginTop = '20px';
+                resultDiv.style.padding = '15px';
+                resultDiv.style.background = 'rgba(76, 175, 80, 0.2)';
+                resultDiv.style.borderRadius = '8px';
+                resultDiv.innerHTML = `
+                    <div style="color: #4fc3f7; margin-bottom: 10px;">重排后结果：</div>
+                    <div style="font-family: 'Courier New', monospace; font-size: 1.1rem;">${result.join(' ')}</div>
+                `;
+                animationContainer.querySelector('.rail-container').appendChild(resultDiv);
+            }, cipher.length * 200 + 1000));
+        }
+
+        // ASCII转换动画
+        function playAsciiAnimation() {
+            const cipher = levels[currentLevel].cipher.split(' ');
+            const asciiMap = {
+                '46': '.', '45': '-', '55': '7', '32': ' '
+            };
+            
+            animationContainer.className = 'animation-container';
+            animationContainer.innerHTML = '<div class="ascii-container"></div>';
+            const container = animationContainer.querySelector('.ascii-container');
+
+            cipher.forEach((code, index) => {
+                const item = document.createElement('div');
+                item.className = 'ascii-item';
+                item.innerHTML = `
+                    <div class="ascii-code">${code}</div>
+                    <div style="color: #4fc3f7; margin: 5px;">↓</div>
+                    <div class="ascii-char">${asciiMap[code] || '?'}</div>
+                    <div style="color: #999; font-size: 0.8rem; margin-top: 5px;">ASCII ${code}</div>
+                `;
+                container.appendChild(item);
+
+                animationTimeouts.push(setTimeout(() => {
+                    item.classList.add('active');
+                }, index * 200));
+            });
+
+            // 显示最终摩斯密码
+            animationTimeouts.push(setTimeout(() => {
+                const resultDiv = document.createElement('div');
+                resultDiv.style.gridColumn = '1 / -1';
+                resultDiv.style.marginTop = '20px';
+                resultDiv.style.padding = '15px';
+                resultDiv.style.background = 'rgba(76, 175, 80, 0.2)';
+                resultDiv.style.borderRadius = '8px';
+                resultDiv.style.textAlign = 'center';
+                resultDiv.innerHTML = `
+                    <div style="color: #4fc3f7; margin-bottom: 10px;">组合成摩斯密码：</div>
+                    <div style="font-family: 'Courier New', monospace; font-size: 1.3rem; letter-spacing: 2px;">${levels[currentLevel].answer}</div>
+                `;
+                container.appendChild(resultDiv);
+            }, cipher.length * 200 + 500));
+        }
+
+        // 摩斯密码动画
+        function playMorseAnimation() {
+            const morseCode = levels[currentLevel].cipher.split(' ');
+            const morseMap = {
+                '.--': 'W', '---': 'O', '.-': 'A', '..': 'I', 
+                '-.': 'N', '--': 'M', '.': 'E'
+            };
+            
+            animationContainer.className = 'animation-container';
+            animationContainer.innerHTML = '<div class="morse-container"></div>';
+            const container = animationContainer.querySelector('.morse-container');
+
+            morseCode.forEach((code, index) => {
+                if (code.trim()) {
+                    const item = document.createElement('div');
+                    item.className = 'morse-item';
+                    item.innerHTML = `
+                        <div class="morse-code morse-blink">${code}</div>
+                        <div class="morse-letter">${morseMap[code] || '?'}</div>
+                    `;
+                    container.appendChild(item);
+
+                    animationTimeouts.push(setTimeout(() => {
+                        item.classList.add('active');
+                    }, index * 800));
+                }
+            });
+
+            // 显示中文转换
+            animationTimeouts.push(setTimeout(() => {
+                const resultDiv = document.createElement('div');
+                resultDiv.style.width = '100%';
+                resultDiv.style.marginTop = '30px';
+                resultDiv.style.padding = '20px';
+                resultDiv.style.background = 'rgba(76, 175, 80, 0.2)';
+                resultDiv.style.borderRadius = '8px';
+                resultDiv.style.textAlign = 'center';
+                
+                const letters = morseCode.filter(c => c.trim()).map(c => morseMap[c] || '?').join('');
+                resultDiv.innerHTML = `
+                    <div style="color: #4fc3f7; margin-bottom: 15px; font-size: 1.1rem;">WOAINIMEN</div>
+                    <div style="color: #fff; margin-bottom: 10px;">↓</div>
+                    <div style="color: #4fc3f7; margin-bottom: 10px;">转换为拼音</div>
+                    <div style="color: #fff; margin-bottom: 10px;">↓</div>
+                    <div style="font-size: 2rem; color: #4caf50; font-weight: bold;">${levels[currentLevel].answer}</div>
+                `;
+                container.appendChild(resultDiv);
+            }, morseCode.length * 800 + 1000));
+        }
+
+        // 继续到下一层
+        function continueToNextLevel() {
+            animationScreen.style.display = 'none';
+            gameScreen.style.display = 'block';
+            feedback.textContent = '';
+            
+            currentLevel++;
+
+            if (currentLevel < levels.length) {
+                loadLevel(currentLevel);
+            } else {
+                showVictory();
+            }
+        }
+
         // 显示胜利画面
         function showVictory() {
             gameScreen.style.display = 'none';
@@ -439,12 +1056,12 @@
             // 创建解密动画
             decryptionAnimation.innerHTML = '';
             const layers = [
-                { text: "镜像反转", level: 6 },
-                { text: "凯撒移位", level: 5 },
-                { text: "栅栏密码", level: 4 },
-                { text: "ASCII映射", level: 3 },
-                { text: "摩斯密码", level: 2 },
-                { text: "最终答案", level: 1 }
+                { text: "Base64解码", level: 6 },
+                { text: "镜像反转", level: 5 },
+                { text: "凯撒密码", level: 4 },
+                { text: "栅栏密码", level: 3 },
+                { text: "ASCII转换", level: 2 },
+                { text: "摩斯密码", level: 1 }
             ];
 
             layers.forEach((item, i) => {
@@ -472,23 +1089,13 @@
         answerInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') submitAnswer();
         });
+        
+        replayBtn.addEventListener('click', () => {
+            playAnimation(levels[currentLevel].animationType);
+        });
+        
+        continueBtn.addEventListener('click', continueToNextLevel);
         restartBtn.addEventListener('click', initGame);
-
-        // 添加CSS动画
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-            @keyframes popIn {
-                0% { transform: scale(0.5); opacity: 0; }
-                70% { transform: scale(1.1); opacity: 1; }
-                100% { transform: scale(1); opacity: 1; }
-            }
-        `;
-        document.head.appendChild(style);
 
         // 启动游戏
         initGame();
